@@ -1,31 +1,80 @@
-import React, { useContext } from 'react';
-import { TiDelete } from 'react-icons/ti';
-import { AppContext } from '../context/AppContext';
+import React, { useContext } from "react";
+import { TiDelete } from "react-icons/ti";
+import { AppContext } from "../context/AppContext";
+
 const ExpenseItem = (props) => {
-    const { dispatch } = useContext(AppContext);
-    const handleDeleteExpense = () => {
-        dispatch({
-            type: 'DELETE_EXPENSE',
-            payload: props.id,
-        });
+  const { dispatch, currency } = useContext(AppContext);
+
+  const handleDeleteExpense = () => {
+    dispatch({
+      type: "DELETE_EXPENSE",
+      payload: props.id,
+    });
+  };
+
+  const increaseAllocation = (name) => {
+    const expense = {
+      name: name,
+      cost: 10,
     };
-    const increaseAllocation = (name) => {
-        const expense = {
-            name: name,
-            cost: 10,
-        };
-        dispatch({
-            type: 'ADD_EXPENSE',
-            payload: expense
-        });
-    }
-    return (
-        <tr>
-        <td>{props.name}</td>
-        <td>£{props.cost}</td>
-        <td><button onClick={event=> increaseAllocation(props.name)}>+</button></td>
-        <td><TiDelete size='1.5em' onClick={handleDeleteExpense}></TiDelete></td>
-        </tr>
-    );
+
+    dispatch({
+      type: "ADD_EXPENSE",
+      payload: expense,
+    });
+  };
+
+  const decreaseAllocation = (name) => {
+    const expense = {
+      name: name,
+      cost: 10,
+    };
+
+    dispatch({
+      type: "RED_EXPENSE",
+      payload: expense,
+    });
+  };
+
+  return (
+    <tr>
+      <td>{props.name}</td>
+      <td>{props.cost}</td>
+
+      <td align="center">
+        <button
+          style={{
+            backgroundColor: "lightgreen",
+            border: "none",
+            borderRadius: "50%",
+            color: "white",
+            fontWeight: "bold",
+          }}
+          onClick={(event) => increaseAllocation(props.name)}
+        >
+          +
+        </button>
+      </td>
+
+      <td>
+        <button
+          style={{
+            backgroundColor: "red",
+            border: "none",
+            borderRadius: "50%",
+            color: "white",
+            fontWeight: "bold",
+          }}
+          onClick={(event) => decreaseAllocation(props.name)}
+        >
+          -
+        </button>
+      </td>
+      <td align="center">
+        <TiDelete size="1.5em" onClick={handleDeleteExpense}></TiDelete>
+      </td>
+    </tr>
+  );
 };
+
 export default ExpenseItem;
